@@ -1,0 +1,6 @@
+*.o
+moc_*
+Qtcam
+.qmake.stash
+Makefile
+.vscode/

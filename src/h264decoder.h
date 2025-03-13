@@ -22,7 +22,8 @@
 #include "common.h"
 #include <QObject>
 
-extern "C" {
+extern "C"
+{
 #include "libavcodec/avcodec.h"
 #include "libavformat/avformat.h"
 #include "libavutil/mathematics.h"
@@ -41,29 +42,29 @@ class H264Decoder : public QObject
 {
     Q_OBJECT
 public:
-   H264Decoder();
-   ~H264Decoder();
-   void closeFile();
-   bool initH264Decoder(unsigned width,unsigned height);
-   int decodeH264(uint8_t *out_buf, uint8_t *in_buf, int buf_size);
-   void yu12_to_yuyv(u_int8_t *out, u_int8_t *in, int width, int height);
+    H264Decoder();
+    ~H264Decoder();
+    void closeFile();
+    bool initH264Decoder(unsigned width, unsigned height);
+    int decodeH264(uint8_t *out_buf, uint8_t *in_buf, int buf_size);
+    void yu12_to_yuyv(u_int8_t *out, u_int8_t *in, int width, int height);
     int libav_decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame, AVPacket *pkt);
-   enum AVPixelFormat get_format_real(AVCodecContext *ctx, const enum AVPixelFormat *pi_fmt);
+    enum AVPixelFormat get_format_real(AVCodecContext *ctx, const enum AVPixelFormat *pi_fmt);
 signals:
     void openDialogBox();
+
 protected:
-      AVCodecContext *pH264CodecCtx;
-      AVCodec *pH264Codec;
-      AVFrame *pH264picture;
-      uint8_t *h264pictureBuf;
-      int h264PictureSize;
+    AVCodecContext *pH264CodecCtx;
+    const AVCodec *pH264Codec;
+    AVFrame *pH264picture;
+    uint8_t *h264pictureBuf;
+    int h264PictureSize;
 
-      void initVars();
-      bool initCodec();
+    void initVars();
+    bool initCodec();
 
-      //free a frame
-      void freeFrame();
-
+    // free a frame
+    void freeFrame();
 };
 
 #endif // H264DECODER_H
