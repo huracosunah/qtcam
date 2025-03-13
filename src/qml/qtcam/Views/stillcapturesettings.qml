@@ -352,11 +352,11 @@ Item {
     Connections
     {
         target: root
-        onSidebarVisibleStatus:
+        function onSidebarVisibleStatus()
         {
             stillproperties.visible = status;
         }
-        onDisableStillProp: //Added by M.VishnuMurali: for disabling still resolution ComboBox and colorspace ComboBox.
+        function onDisableStillProp()
         {
         		color_comp_box.enabled = status
         		color_comp_box.opacity = (color_comp_box.enabled  ? 1:0.1)
@@ -367,7 +367,7 @@ Item {
     Connections
     {
         target: root
-        onCameraSettingsTabEnable:
+        function onCameraSettingsTabEnable()
         {
             stillproperties.visible = status;
         }
@@ -375,7 +375,7 @@ Item {
     Connections
     {
         target:root
-        onCameraControlPropertyChange:
+        function onCameraControlPropertyChange()
         {
             stillColorSpace = false
         }
@@ -383,7 +383,7 @@ Item {
     Connections
     {
         target:root
-        onStillChildVisibleState:
+        function onStillChildVisibleState()
         {
             stillchildProperty.visible = visibleStatus;
         }
@@ -391,7 +391,7 @@ Item {
     Connections
     {
         target: root
-        onStillPropertyItemEnable:
+        function onStillPropertyItemEnable()
         {
             stillproperties.enabled = enableStatus
             stillproperties.opacity = enableStatus ? 1 : 0.5
@@ -400,7 +400,7 @@ Item {
     Connections
     {
         target: root
-        onInsertStillImageFormat:
+        function onInsertStillImageFormat()
         {
             stillImageFormat = []
             stillImageFormat = stillFormat
@@ -417,7 +417,7 @@ Item {
     Connections
     {
         target: root
-        onSetColorComboOutputIndex:
+        function onSetColorComboOutputIndex()
         {
             if(isColorCombo)
             {
@@ -433,7 +433,7 @@ Item {
     Connections
     {
         target: root
-        onGetStillPropertyPositionValues:
+        function onGetStillPropertyPositionValues()
         {
             root.imageFormatYValue = image_format.y
             root.stillPropertyYValue = still_properties.y

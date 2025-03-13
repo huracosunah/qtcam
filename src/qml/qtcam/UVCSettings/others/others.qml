@@ -40,15 +40,15 @@ Item {
     Connections
     {
         target: root
-        onTakeScreenShot:
+        function onTakeScreenShot()
         {
             root.imageCapture(CommonEnums.SNAP_SHOT);
         }
-        onGetVideoPinStatus:
+        function onGetVideoPinStatus()
         {
             root.enableVideoPin(true);
         }
-        onGetStillImageFormats:
+        function onGetStillImageFormats()
         {
             var stillImageFormat = []
             stillImageFormat.push("jpg")
@@ -57,7 +57,8 @@ Item {
             stillImageFormat.push("png")
             root.insertStillImageFormat(stillImageFormat);
         }
-        onSkipFrameCount:{
+        function onSkipFrameCount()
+        {
             root.setSkipFrameCount(3)
         }
     }

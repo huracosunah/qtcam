@@ -104,7 +104,7 @@ Item {
     Connections
     {
         target: root
-        onSidebarVisibleStatus:
+        function onSidebarVisibleStatus()
         {
             aboutViewItem.visible = status;
         }

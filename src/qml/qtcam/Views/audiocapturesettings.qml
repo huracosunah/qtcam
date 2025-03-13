@@ -410,18 +410,20 @@ Item {
 
     Connections{
         target: root
-        onCameraSelected:{
+        function onCameraSelected()
+        {
             cameraSelect = true
         }
 
-        onCameraDeviceUnplugged:
+        function onCameraDeviceUnplugged()
         {
             audioDevicesList.currentIndex = 0
             audio_Capture_property_Child.visible = false
         }
 
 	// Added by Sankari : Mar 7 - disable audio settings
-        onDisableAudioSettings:{
+        function onDisableAudioSettings()
+        {
             if(disableSettings){
                 audioCaptureProperty.enabled = false
                 audioCaptureProperty.opacity = 0.1
@@ -432,23 +434,23 @@ Item {
             }
         }
 
-        onUpdateAudioMenuPosition:
+        function onUpdateAudioMenuPosition()
         {
             imageFormatY = root.imageFormatYValue
             stillPropertyY = root.stillPropertyYValue
         }
 
-        onSidebarVisibleStatus:
+        function onSidebarVisibleStatus()
         {
             audioCaptureProperty.visible = status
         }
 
-        onCameraSettingsTabEnable:
+        function onCameraSettingsTabEnable()
         {
             audioCaptureProperty.visible = status;
         }
 
-        onAudioPropertyItemEnable:
+        function onAudioPropertyItemEnable()
         {
             audioCaptureProperty.enabled = enableStatus
             audioCaptureProperty.opacity = enableStatus ? 1 : 0.5

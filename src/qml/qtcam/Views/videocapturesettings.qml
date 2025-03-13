@@ -539,14 +539,14 @@ Item {
         Keys.onSpacePressed: {
 
         }
-        onFocusChanged: {
+        function onFocusChanged() {
             video_Capture_property_Child.visible = false
         }
     }
     Connections
     {
         target: root
-        onSidebarVisibleStatus:
+        function onSidebarVisibleStatus()
         {
             videoCaptureProperty.visible = status
 
@@ -555,7 +555,7 @@ Item {
     Connections
     {
         target: root
-        onCameraSettingsTabEnable:
+        function onCameraSettingsTabEnable()
         {
             videoCaptureProperty.visible = status;
         }
@@ -563,7 +563,7 @@ Item {
     Connections
     {
         target:root
-        onCameraControlPropertyChange:
+        function onCameraControlPropertyChange()
         {
             outputSizeBox = false
             frameRateBox = false
@@ -574,7 +574,7 @@ Item {
     Connections
     {
         target: root
-        onVideoFrameInterval:
+        function onVideoFrameInterval()
         {
             videoPinFrameInterval = frameInterval
             frame_rate_box.currentIndex = videoPinFrameInterval
@@ -584,7 +584,7 @@ Item {
     Connections
     {
         target: root
-        onVideoPropertyItemEnable:
+        function onVideoPropertyItemEnable()
         {
             videoCaptureProperty.enabled = enableStatus
             videoCaptureProperty.opacity = enableStatus ? 1 : 0.5
@@ -593,7 +593,7 @@ Item {
     Connections
     {
         target: root
-        onVideoChildMenuVisible:
+        function onVideoChildMenuVisible()
         {
             video_Capture_property_Child.visible = visibleStatus
         }
@@ -601,7 +601,7 @@ Item {
     Connections
     {
         target: root
-        onSetVideoColorComboOutputIndex:
+        function onSetVideoColorComboOutputIndex()
         {
             if(isColorCombo)
             {
@@ -617,7 +617,7 @@ Item {
     Connections
     {
         target: root
-        onUpdateVideoMenuPosition:
+        function onUpdateVideoMenuPosition()
         {
             imageFormatY = root.imageFormatYValue
             stillPropertyY = root.stillPropertyYValue

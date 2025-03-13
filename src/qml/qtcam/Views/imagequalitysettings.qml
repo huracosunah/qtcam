@@ -1321,36 +1321,36 @@ Item {
     {
         target: root
         // Enable Image Quality settings after capturing image
-        onImageQualitySettingsEnable:
+        function onImageQualitySettingsEnable()
         {
             videoFilter.enabled = enableStatus
             videoFilter.opacity = enableStatus ? 1 : 0.5
         }
-        onSidebarVisibleStatus:
+        function onSidebarVisibleStatus()
         {
             videoFilter.visible = status;
         }
 
         //Added by Sushanth - Signals getting values from HID settings and set it to UVC
-        onSendGainValueToUVC:{
+        function onSendGainValueToUVC() {
             gain_Slider.value = gain
         }
-        onGetBrightnessFromHID:{
+        function onGetBrightnessFromHID() {
             brightness_Slider.value = brightnessFromHID
         }
-        onGetContrastFromHID:{
+        function onGetContrastFromHID() {
             contrast_Slider.value = contrastFromHID
         }
-        onGetSaturationFromHID:{
+        function onGetSaturationFromHID() {
             saturation_Slider.value = saturationFromHID
         }
-        onGetGammaFromHID:{
+        function onGetGammaFromHID() {
             gamma_Slider.value = gammaFromHID
         }
-        onGetColorTempFromHID:{
+        function onGetColorTempFromHID() {
             white_balance_Slider.value = colorTempFromHID
         }
-        onGetExposureStatusFromHID:{
+        function onGetExposureStatusFromHID() {
             if(isAutoEnable)
             {
                 exposureCombo.currentIndex = 0
@@ -1361,17 +1361,17 @@ Item {
                 exposure_Slider.value = exposure
             }
         }
-        onGetExposureFromHID:{
+        function onGetExposureFromHID() {
             updateUVCExposure = false
             exposure_Slider.value = exposureFromHID
             updateUVCExposure = true
         }
 
-        onDisableUVCSettings:{
+        function onDisableUVCSettings() {
             white_balance_Slider.enabled = false
             white_balance_Slider.opacity = 0.1
         }
-        onGetWhiteBalanceModeFromHID:{
+        function onGetWhiteBalanceModeFromHID() {
             //To store the Enable/Disable status of White balance mode
             if(isAutoEnabled){
                 autoWhiteBalanceSelect = true
@@ -1387,12 +1387,12 @@ Item {
     Connections
     {
         target: root
-        onCameraSettingsTabEnable:
+        function onCameraSettingsTabEnable()
         {
             videoFilter.visible = status;
         }
 
-        onDisableManualExp:
+        function onDisableManualExp()
         {
             if(!isAutoExpSelected)
             {
@@ -1415,7 +1415,7 @@ Item {
                 }
             }
         }
-        onDisableAutoFocus:
+        function onDisableAutoFocus()
         {
             if(isAutoFocusSelected)
             {
@@ -1439,7 +1439,7 @@ Item {
             }
         }
 
-        onDisableAwb:
+        function onDisableAwb()
         {
             root.cameraFilterControls(true)           //getting the control values to update awb manual slider
             if(isAwbSelected)
@@ -1466,7 +1466,7 @@ Item {
     Connections
     {
         target:root
-        onSetControlValues:
+        function onSetControlValues()
         {
             setCameraControls(controlName,controlType,controlMinValue,controlMaxValue,controlStepSize,controlDefaultValue,controlID);
         }
@@ -1474,7 +1474,7 @@ Item {
     Connections
     {
         target:root
-        onDisableImageSettings:
+        function onDisableImageSettings()
         {
             setOpacityFalse();
         }
@@ -1482,7 +1482,7 @@ Item {
     Connections
     {
         target:root
-        onVideoCaptureFilterChildVisible:
+        function onVideoCaptureFilterChildVisible()
         {
             video_capture_filter_Child.visible = visibleStatus
         }
@@ -1490,7 +1490,7 @@ Item {
     Connections
     {
         target:root
-        onCameraControlPropertyChange:
+        function onCameraControlPropertyChange()
         {
             usb3speed = false
             brightValueChangeProperty = false
@@ -1522,7 +1522,7 @@ Item {
     Connections
     {
         target:root
-        onAddAutoModeMenuItem:
+        function onAddAutoModeMenuItem()
         {
             if(root.selectedDeviceEnumValue == CommonEnums.CX3_UVC_CAM){
                 root.cameraFilterControls(true)
@@ -1533,7 +1533,8 @@ Item {
                 }
             }
         }
-        onQueryUvcControls:{
+        function onQueryUvcControls()
+        {
             queryctrlTimer.start()
         }
 

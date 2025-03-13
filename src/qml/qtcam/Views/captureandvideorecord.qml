@@ -324,7 +324,7 @@ Item {
     Connections
     {
         target: root
-        onSidebarVisibleStatus:
+        function onSidebarVisibleStatus()
         {
             captureRecord.visible = status;
         }
@@ -332,7 +332,7 @@ Item {
     Connections
     {
         target: root
-        onCaptureBtnEnable:
+        function onCaptureBtnEnable()
         {
             capture.enabled = enable
             capture.opacity = enable ? 1 : 0.5
@@ -341,7 +341,7 @@ Item {
     Connections
     {
         target: root
-        onVideoRecordBtnEnable:
+        function onVideoRecordBtnEnable()
         {
             record.enabled = enable
             record.opacity = enable ? 1 : 0.5
@@ -353,7 +353,7 @@ Item {
     Connections
     {
         target: root
-        onVideoRecordBtnVisible:
+        function onVideoRecordBtnVisible()
         {
             record.visible = visible
             recordStopBtnVisibility(!visible)
