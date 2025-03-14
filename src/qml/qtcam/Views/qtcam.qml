@@ -973,11 +973,11 @@ Rectangle {
 
                         if(ecam83USBstate !=2)     //If PIN2 is streaming, PIN1(H264) should not stream.
                         {
-                        vidstreamproperty.startAgain() // Then start preview
-                        getStillImageFormats();
-                        vidstreamproperty.updatepreview()
-                        // Added by Sankari: 12 Feb 2018 - initialize a socket notifier to get key from camera.
-                        keyEvent.initializeToGetKey();
+                            vidstreamproperty.startAgain() // Then start preview
+                            getStillImageFormats();
+                            vidstreamproperty.updatepreview()
+                            // Added by Sankari: 12 Feb 2018 - initialize a socket notifier to get key from camera.
+                            keyEvent.initializeToGetKey();
                         }
                         else
                         {

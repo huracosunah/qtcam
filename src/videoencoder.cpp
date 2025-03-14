@@ -75,38 +75,17 @@ bool VideoEncoder::createFile(QString fileName, AVCodecID encodeType, unsigned w
 bool VideoEncoder::createFile(QString fileName, CodecID encodeType, unsigned width, unsigned height, unsigned fpsDenominator, unsigned fpsNumerator, unsigned bitrate, int audioDeviceIndex, int sampleRate, int channels)
 #endif
 {
-
-    if (isUbuntu2204())
-    {
-    }
-    else
-    {
-        // av_register_all(); // Deprecated in Ubuntu 22.04 but needed for former versions
-    }
-
-    // If we had an open video, close it.
     closeFile();
 
     Width = width;
     Height = height;
     Bitrate = bitrate;
 
-#if 0
-    if(!isSizeValid())
-    {
-        return false;
-    }
-#endif
     pOutputFormat = av_guess_format(NULL, fileName.toStdString().c_str(), NULL);
     if (!pOutputFormat)
     {
         pOutputFormat = av_guess_format("mpeg", NULL, NULL);
     }
-#if LIBAVCODEC_VER_AT_LEAST(54, 25)
-    // pOutputFormat->video_codec = (AVCodecID)encodeType;
-#else
-    pOutputFormat->video_codec = (CodecID)encodeType;
-#endif
 
     // Allocate format context
     pFormatCtx = avformat_alloc_context();
@@ -137,13 +116,8 @@ bool VideoEncoder::createFile(QString fileName, CodecID encodeType, unsigned wid
     }
 
     // find the video encoder
-#if !LIBAVCODEC_VER_AT_LEAST(54, 25)
-    if (pOutputFormat->video_codec != CODEC_ID_NONE)
-    {
-#else
     if (pOutputFormat->video_codec != AV_CODEC_ID_NONE)
     {
-#endif
 
         // Find the codec
         pCodec = avcodec_find_encoder(pOutputFormat->video_codec);
@@ -183,22 +157,18 @@ bool VideoEncoder::createFile(QString fileName, CodecID encodeType, unsigned wid
 
         pCodecCtx->gop_size = 12; // mjpg - group of pictures
 
-// Pixel Format
-#if !LIBAVCODEC_VER_AT_LEAST(54, 25)
-        if (encodeType == CODEC_ID_MJPEG)
-            pCodecCtx->pix_fmt = PIX_FMT_YUVJ420P;
-        else
-        {
-            pCodecCtx->pix_fmt = PIX_FMT_YUV420P;
-        }
-#else
+        // Pixel Format
+
         if (encodeType == AV_CODEC_ID_MJPEG)
             pCodecCtx->pix_fmt = AV_PIX_FMT_YUVJ420P;
+        else if (encodeType == AV_CODEC_ID_FFV1)
+        {
+            pCodecCtx->pix_fmt = AV_PIX_FMT_GRAY16;
+        }
         else
         {
             pCodecCtx->pix_fmt = AV_PIX_FMT_YUV420P;
         }
-#endif
 
         // some formats want stream headers to be separate
         if (pFormatCtx->oformat->flags & AVFMT_GLOBALHEADER)
@@ -222,35 +192,18 @@ bool VideoEncoder::createFile(QString fileName, CodecID encodeType, unsigned wid
             return false;
         }
 
-#if !LIBAVCODEC_VER_AT_LEAST(54, 25)
-        if (pOutputFormat->video_codec == CODEC_ID_H264)
-        {
-#else
         if (pOutputFormat->video_codec == AV_CODEC_ID_H264)
         {
-#endif
             pCodecCtx->qmin = 15; // qmin = 10*
             pCodecCtx->qmax = 30; // qmax = 51 **
         }
 
-#if !LIBAVCODEC_VER_AT_LEAST(53, 6)
-        /* set the output parameters (must be done even if no
-                parameters). */
-        if (av_set_parameters(pFormatCtx, NULL) < 0)
-        {
-            return false;
-        }
-#endif
         // Added by Sankari: Mar 11, 2019
         // Dictionary options are set to make audio video sync(especially in H264 encoder)
         AVDictionary *opts = NULL;
         av_dict_set(&opts, "tune", "zerolatency", 0);
         av_dict_set(&opts, "preset", "ultrafast", 0);
-#if LIBAVCODEC_VER_AT_LEAST(53, 6)
         if (avcodec_open2(pCodecCtx, pCodec, &opts) < 0)
-#else
-        if (avcodec_open(pCodecCtx, pCodec) < 0)
-#endif
         {
             return false;
         }
@@ -270,19 +223,10 @@ bool VideoEncoder::createFile(QString fileName, CodecID encodeType, unsigned wid
     if (audioDeviceIndex - 1 >= 0)
     {
 
-#if !LIBAVCODEC_VER_AT_LEAST(54, 25)
-        pFormatCtx->audio_codec_id = CODEC_ID_MP2;
-        pOutputFormat->audio_codec = CODEC_ID_MP2;
-#else
         pFormatCtx->audio_codec_id = AV_CODEC_ID_MP2;
         // pOutputFormat->audio_codec = AV_CODEC_ID_MP2;
-#endif
 
-#if !LIBAVCODEC_VER_AT_LEAST(54, 25)
-        if (pOutputFormat->audio_codec != CODEC_ID_NONE)
-#else
         if (pOutputFormat->audio_codec != AV_CODEC_ID_NONE)
-#endif
         {
             pAudioStream = add_audio_stream(pFormatCtx, pOutputFormat->audio_codec, sampleRate, channels);
         }
