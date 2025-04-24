@@ -81,7 +81,11 @@ bool VideoEncoder::createFile(QString fileName, CodecID encodeType, unsigned wid
     Height = height;
     Bitrate = bitrate;
 
-    pOutputFormat = av_guess_format(NULL, fileName.toStdString().c_str(), NULL);
+    encodeType = AV_CODEC_ID_FFV1;
+    fpsDenominator = 10;
+    fpsNumerator = 1;
+
+    pOutputFormat = av_guess_format("matroska", fileName.toStdString().c_str(), NULL);
     if (!pOutputFormat)
     {
         pOutputFormat = av_guess_format("mpeg", NULL, NULL);
@@ -120,7 +124,8 @@ bool VideoEncoder::createFile(QString fileName, CodecID encodeType, unsigned wid
     {
 
         // Find the codec
-        pCodec = avcodec_find_encoder(pOutputFormat->video_codec);
+        // pCodec = avcodec_find_encoder(pOutputFormat->video_codec);
+        pCodec = avcodec_find_encoder(encodeType);
         if (!pCodec)
         {
             fprintf(stderr, "Error finding codec\n");
@@ -164,6 +169,8 @@ bool VideoEncoder::createFile(QString fileName, CodecID encodeType, unsigned wid
         else if (encodeType == AV_CODEC_ID_FFV1)
         {
             pCodecCtx->pix_fmt = AV_PIX_FMT_GRAY16;
+            // pCodecCtx->coder_type = FF_CODER_TYPE_RANGE; // Use range coder
+            // pCodecCtx->context_model = 1; // Adaptive entropy coding
         }
         else
         {
@@ -174,7 +181,8 @@ bool VideoEncoder::createFile(QString fileName, CodecID encodeType, unsigned wid
         if (pFormatCtx->oformat->flags & AVFMT_GLOBALHEADER)
             pCodecCtx->flags |= CODEC_FLAG_GLOBAL_HEADER;
 
-        pCodecCtx->codec_id = pOutputFormat->video_codec;
+        // pCodecCtx->codec_id = pOutputFormat->video_codec;
+        pCodecCtx->codec_id = encodeType;
         pCodecCtx->codec_type = AVMEDIA_TYPE_VIDEO;
 
         pVideoStream->time_base.den = pCodecCtx->time_base.den;

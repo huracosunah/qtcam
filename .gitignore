@@ -4,3 +4,6 @@ Qtcam
 .qmake.stash
 Makefile
 .vscode/
+*.mkv
+*.mp4
+*.raw
