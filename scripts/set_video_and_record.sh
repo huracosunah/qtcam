@@ -1,4 +1,4 @@
-export VIDEO_SRC=/dev/video8
+export VIDEO_SRC=/dev/video0
 export VIDEO_WIDTH=1600
 export VIDEO_HEIGHT=1300
 export VIDEO_FPS=40
@@ -6,7 +6,8 @@ export VIDEO_SIZE="${VIDEO_WIDTH}x${VIDEO_HEIGHT}"
 
 # Options are "ffv1" or "libx264"
 # export VIDEO_ENCODER=ffv1
-export VIDEO_ENCODER=libx264
+# export VIDEO_ENCODER=libx264
+export VIDEO_ENCODER=libx265
 
 # Options are "GREY" or "Y16 " (note the space at the end)
 # PIXEL_FORMAT="GREY"
@@ -23,7 +24,7 @@ fi
 
 v4l2-ctl --device=$VIDEO_SRC --list-formats-ext
 v4l2-ctl --device=$VIDEO_SRC --set-fmt-video=width=$VIDEO_WIDTH,height=$VIDEO_HEIGHT,pixelformat="$PIXEL_FORMAT"
-v4l2-ctl --device=$VIDEO_SRC --set-ctrl=brightness=10
+v4l2-ctl --device=$VIDEO_SRC --set-ctrl=brightness=100
 v4l2-ctl --device=$VIDEO_SRC --all
 v4l2-ctl --device=$VIDEO_SRC --get-fmt-video
 
@@ -44,7 +45,7 @@ if [ $VIDEO_ENCODER == "ffv1" ]; then
         -level 3 \
         -g 1 \
         -y "output_${PIX_FMT}.mkv"
-else
+elif [ $VIDEO_ENCODER == "libx264" ]; then
         PIX_FMT="yuv420p10le"
 
         ffmpeg \
@@ -59,9 +60,28 @@ else
         -pix_fmt $PIX_FMT \
         -c:v libx264 \
         -profile:v high10 \
-        -preset veryfast \
-        -crf 20 \
+        -preset ultrafast \
+        -crf 22 \
         -g 10 \
+        -y "output_${PIX_FMT}.mkv"
+else
+        PIX_FMT="yuv420p12le"
+        
+
+        ffmpeg \
+        -hide_banner \
+        -f v4l2 \
+        -video_size $VIDEO_SIZE \
+        -pixel_format gray \
+        -framerate $VIDEO_FPS \
+        -i $VIDEO_SRC \
+        -frames:v 50 \
+        -filter:v fps=10 \
+        -pix_fmt $PIX_FMT \
+        -c:v libx265 \
+        -x265-params "keyint=10:min-keyint=10:no-open-gop=1" \
+        -preset ultrafast \
+        -crf 22 \
         -y "output_${PIX_FMT}.mkv"
 fi
 

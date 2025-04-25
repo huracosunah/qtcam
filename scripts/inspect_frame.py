@@ -34,3 +34,17 @@ try:
     print("Mean:", frame.mean())
 except FileNotFoundError:
     print("frame_yuv420p10le.raw not found")
+
+
+try:
+    # Y is the first w*h samples
+    # is the 12bit luma
+
+    raw = np.fromfile("frame_yuv420p12le.raw", dtype=np.uint16)
+    frame = raw[:y_size].reshape((h, w))
+    print("yuv420p12le")
+    print("Min:", frame.min())
+    print("Max:", frame.max())
+    print("Mean:", frame.mean())
+except FileNotFoundError:
+    print("frame_yuv420p12le.raw not found")
